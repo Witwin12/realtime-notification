@@ -1,0 +1,33 @@
+# --- Java / Maven ---
+**/target/
+**.class
+**.jar
+**.war
+**.ear
+**.log
+
+# Maven Wrapper
+**/.mvn/wrapper/maven-wrapper.jar
+
+# --- Node / React ---
+**/node_modules/
+**/dist/
+**/.env
+**/.env.local
+**/.env.*.local
+**/.pnpm-debug.log*
+**.eslintcache
+
+# --- IDE (VS Code / IntelliJ) ---
+**/.vscode/
+**/.idea/
+**.iml
+**.DS_Store
+**/nbproject/
+**/nbactions.xml
+**/nb-configuration.xml
+
+# --- Database ---
+# หากมีการใช้ H2 แบบเก็บไฟล์ (File mode)
+**.mv.db
+**.trace.db
