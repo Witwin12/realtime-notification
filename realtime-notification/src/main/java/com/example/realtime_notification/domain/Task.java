@@ -3,8 +3,19 @@ package com.example.realtime_notification.domain;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 @Entity
 @Table(name = "tasks")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Task {
 
     @Id
@@ -29,24 +40,6 @@ public class Task {
 
     @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
     private TaskLog taskLog;
-
-    public Task() {}
-
-    // ===== Getter / Setter =====
-
-    public Long getId() { return id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getDetail() { return detail; }
-    public void setDetail(String detail) { this.detail = detail; }
-
-    public LocalDate getDeadline() { return deadline; }
-    public void setDeadline(LocalDate deadline) { this.deadline = deadline; }
-
-    public User getCreator() { return creator; }
-    public void setCreator(User creator) { this.creator = creator; }
 
     @Transient
     public boolean isExpired() {

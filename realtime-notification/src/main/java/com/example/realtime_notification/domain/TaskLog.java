@@ -3,9 +3,21 @@ package com.example.realtime_notification.domain;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 @Entity
 @Table(name = "task_logs")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TaskLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,15 +30,6 @@ public class TaskLog {
     private String logContent;
 
     @Column(name = "created_at")
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    public TaskLog() {}
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public Task getTask() { return task; }
-    public void setTask(Task task) { this.task = task; }
-
-    public String getLogContent() { return logContent; }
-    public void setLogContent(String logContent) { this.logContent = logContent; }
 }

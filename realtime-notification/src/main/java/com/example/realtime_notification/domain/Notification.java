@@ -3,9 +3,21 @@ package com.example.realtime_notification.domain;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 @Entity
 @Table(name = "notifications")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Notification {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,18 +30,6 @@ public class Notification {
     private String targetTag; 
 
     @Column(name = "created_at")
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    public Notification() {}
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public Task getTask() { return task; }
-    public void setTask(Task task) { this.task = task; }
-    
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
-
-    public String getTargetTag() { return targetTag; }
-    public void setTargetTag(String targetTag) { this.targetTag = targetTag; }
 }
