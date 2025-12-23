@@ -1,6 +1,9 @@
 package com.example.realtime_notification.domain;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 
@@ -30,5 +33,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Task> tasks;
+    
 }

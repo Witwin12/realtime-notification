@@ -29,18 +29,23 @@ public class TaskService {
     }
 
     // 2. แก้ไข Task (เช็คสิทธิ์คนสร้าง)
-    @Transactional
-    public Task updateTask(Long taskId, Task taskDetails, User user) {
-        Task existingTask = getTaskAndCheckOwnership(taskId, user);
+@Transactional
+public Task updateTask(Long taskId, Task taskDetails, User user) {
+    Task existingTask = taskRepository.findById(taskId)
+            .orElseThrow(() -> new RuntimeException("ไม่พบ Task ID: " + taskId));
 
-        existingTask.setTitle(taskDetails.getTitle());
-        existingTask.setDetail(taskDetails.getDetail());
-        existingTask.setDeadline(taskDetails.getDeadline());
-
-        saveLog(existingTask, "แก้ไขข้อมูลงานโดย: " + user.getUsername());
-
-        return taskRepository.save(existingTask);
+    if (!existingTask.getCreator().getId().equals(user.getId())) {
+        throw new RuntimeException("คุณไม่มีสิทธิ์จัดการงานนี้!");
     }
+
+    if (taskDetails.getTitle() != null) existingTask.setTitle(taskDetails.getTitle());
+    if (taskDetails.getDetail() != null) existingTask.setDetail(taskDetails.getDetail());
+    if (taskDetails.getDeadline() != null) existingTask.setDeadline(taskDetails.getDeadline());
+
+    saveLog(existingTask, "แก้ไขข้อมูลงานโดย: " + user.getUsername());
+
+    return existingTask; 
+}
 
     // 3. ลบ Task (เช็คสิทธิ์คนสร้าง)
     @Transactional
@@ -59,7 +64,7 @@ public class TaskService {
 
         // Logic สำคัญ: ถ้าคนที่จะแก้/ลบ ไม่ใช่คนสร้าง (Creator) ให้ Error ทันที
         if (!task.getCreator().getId().equals(user.getId())) {
-            throw new RuntimeException("คุณไม่มีสิทธิ์จัดการงานนี้ เพราะคุณไม่ใช่เจ้าของ!");
+            throw new RuntimeException("คุณไม่มีสิทธิ์จัดการงานนี้");
         }
         
         return task;

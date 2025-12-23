@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TaskLogRepository extends JpaRepository<TaskLog, Long> {
-    // ค้นหา Log ของ Task นั้นๆ
+
     Optional<TaskLog> findByTask(Task task);
 }

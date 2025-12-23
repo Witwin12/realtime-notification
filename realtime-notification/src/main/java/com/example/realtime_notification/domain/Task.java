@@ -2,6 +2,9 @@ package com.example.realtime_notification.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -38,8 +41,9 @@ public class Task {
     @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
     private Notification notification;
 
-    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
-    private TaskLog taskLog;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TaskLog> taskLogs;
 
     @Transient
     public boolean isExpired() {

@@ -22,7 +22,7 @@ public class TaskLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
 
