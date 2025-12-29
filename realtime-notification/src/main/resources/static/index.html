@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Real-time Notification Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
-    <h1>Real-time Notification moc UI</h1>
-    <div id="notifications" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: scroll;">
+    <h1>Real-time Notification Mock UI</h1>
+    <div id="status" style="margin-bottom: 10px; color: gray;">Status: Connecting...</div>
+    
+    <div id="notifications" style="border: 2px solid #333; padding: 15px; height: 300px; overflow-y: scroll; background-color: #f9f9f9; font-family: Arial, sans-serif;">
         </div>
 
     <script>
-        // 1. เชื่อมต่อกับ Endpoint ที่เราตั้งไว้ใน Config
+        // 1. Connect to the Endpoint defined in WebSocketConfig
         var socket = new SockJS('/ws-notification');
         var stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function (frame) {
+            document.getElementById('status').innerText = 'Status: Connected';
+            document.getElementById('status').style.color = 'green';
             console.log('Connected: ' + frame);
             
-            // 2. รอฟังข้อมูลจากท่อ /topic/notifications
+            // 2. Subscribe to the topic /topic/notifications
             stompClient.subscribe('/topic/notifications', function (notification) {
+                console.log('Received Message:', notification.body);
                 showNotification(notification.body);
             });
+        }, function (error) {
+            document.getElementById('status').innerText = 'Status: Connection Error';
+            document.getElementById('status').style.color = 'red';
+            console.log('STOMP error ' + error);
         });
 
         function showNotification(message) {
             var div = document.getElementById('notifications');
             var p = document.createElement('p');
-            p.style.color = 'red';
-            p.innerText = message;
-            div.appendChild(p);
+            p.style.borderBottom = '1px solid #ddd';
+            p.style.padding = '5px 0';
+            p.style.margin = '5px 0';
+            p.style.color = '#d9534f'; // Professional Red color
+            
+            // Check if message is JSON, if so, extract specific field or stringify
+            try {
+                var data = JSON.parse(message);
+                p.innerText = '[System] ' + (data.content || data.message || message);
+            } catch (e) {
+                p.innerText = '[System] ' + message;
+            }
+            
+            div.prepend(p); // Put newest message on top
         }
     </script>
 </body>

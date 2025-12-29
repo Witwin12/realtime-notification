@@ -49,4 +49,6 @@ public class Task {
     public boolean isExpired() {
         return deadline != null && deadline.isBefore(LocalDate.now());
     }
+    @Builder.Default
+    private Boolean notified = false;
 }
